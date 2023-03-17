@@ -1,0 +1,217 @@
+:root {
+    --color-primary: #ffffff;
+    --color-secondary: #b0b0b5;
+    --color-link: #1e69ff;
+    --color-icon: #b0b0b5;
+    --border-color: #303030;
+    --border-radius: 4px;
+    --border-radius-md: 8px;
+    --background-color-primary: #1c1d21;
+    --background-color-secondary: #242529;
+    --background-color-row-hover: #30303091;
+}
+
+html {
+    width: 533px;
+    height: 599px;
+}
+
+a {
+    color: #ffffff;
+}
+
+a:hover {
+    color: var(--color-link);
+}
+
+p,
+button {
+    font-size: medium;
+}
+
+.container {
+    background-color: var(--background-color-secondary);
+    padding: 10px;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: var(--border-radius);
+    border-color: var(--border-color);
+}
+
+body {
+    background-color: var(--background-color-primary);
+    color: var(--color-primary);
+    padding: 10px;
+}
+
+.hFlex {
+    display: flex;
+    flex-direction: row;
+}
+
+.vFlex {
+    display: flex;
+    flex-direction: column;
+}
+
+.rowEnd {
+    justify-content: flex-end;
+    padding: 5px;
+    padding-right: 10px;
+    padding-left: 10px;
+    align-items: center;
+}
+
+hr {
+    margin: 0px;
+    border-color: var(--border-color);
+    border-style: outset;
+}
+
+.tabNav {
+    justify-content: flex-start;
+}
+
+.tabTitle {
+    padding-left: 25px;
+    padding-right: 25px;
+    border-top-left-radius: var(--border-radius-md);
+    border-top-right-radius: var(--border-radius-md);
+    border-left: var(--border-color);
+    border-top: var(--border-color);
+    border-right: var(--border-color);
+    border-bottom: var(--background-color-primary);
+    border-width: 2px;
+    border-style: solid;
+    margin-left: 5px;
+}
+
+.tabTitle:hover {
+    color: var(--color-link);
+}
+
+.textCenter {
+    text-align: center;
+}
+
+.row {
+    justify-content: space-between;
+    padding: 5px;
+    padding-right: 10px;
+    padding-left: 10px;
+    align-items: center;
+}
+
+.row:hover {
+    background-color: var(--background-color-row-hover);
+}
+
+.keySetButton,
+.exportButton {
+    width: 125px;
+    height: 25px;
+    margin: 5px;
+}
+
+.keyRemoveButton,
+.removeTemplateButton {
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px;
+    visibility: hidden;
+}
+
+.templateList {
+    margin: 10px;
+}
+
+.keyRemoveButtonImg {
+    visibility: visible;
+}
+
+.keyRemoveButtonImg:hover {
+    filter: hue-rotate(210deg);
+}
+
+button:active {
+    transform: translateY(2px);
+}
+
+.bindDescription,
+exportDescription {
+    margin: 0px;
+}
+
+
+/* The switch - the box around the slider */
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+
+/* Hide default HTML checkbox */
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+
+/* The slider */
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked+.slider {
+    background-color: #2196F3;
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+
+/* Rounded sliders */
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
