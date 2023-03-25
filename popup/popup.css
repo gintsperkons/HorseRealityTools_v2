@@ -87,7 +87,8 @@ hr {
 }
 
 .tabTitle:hover {
-    color: var(--color-link);
+    color: var(--color-link) !important;
+    cursor: pointer;
 }
 
 .textCenter {
