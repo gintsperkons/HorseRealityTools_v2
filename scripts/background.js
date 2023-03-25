@@ -1,17 +1,7 @@
-horseData = {};
-horseConfig = {};
+import { main } from "../storageAccessComponents/main.js";
 
-const saveHorseConfig = () => {
-    chrome.storage.sync.set({ "horseConfig": horseConfig }).then(() => {
-        chrome.storage.sync.get("horseConfig", setHorseConfig);
-    });
-}
-
-const saveHorseData = () => {
-    chrome.storage.local.set({ "horseData": horseData }).then(() => {
-        chrome.storage.local.get("horseData", setHorseData);
-    });
-}
+var horseData = {};
+var horseConfig = {};
 
 const setHorseConfig = (config) => {
     if (!config["horseConfig"]) {
@@ -19,7 +9,6 @@ const setHorseConfig = (config) => {
         return;
     }
     horseConfig = config["horseConfig"];
-
 }
 const setHorseData = (data) => {
     if (!data["horseData"]) {
@@ -29,70 +18,59 @@ const setHorseData = (data) => {
     horseData = data["horseData"];
 }
 
-const getHorseItem = (item) => {
-    return horseData[item];
-}
-
-const setHorseItem = (item, data) => {
-    horseData[item] = data;
-    saveHorseData();
-}
-
-
 const handleDataRequests = (request, sender, sendResponse) => {
-    if (request["mode"] === "get" && request["type"] === "horse") {
-        sendResponse(getHorseItem(request["item"]));
+    if (request["mode"] === "get") {
+        main.get.handleDataRequests(request, sendResponse, horseData, horseConfig);
         return;
     }
-    if (request["mode"] === "set" && request["type"] === "horse") {
-        setHorseItem(request["item"], request["data"]);
-        sendResponse({ "status": "success" });
-        return;
-    }
-    if (request["mode"] === "get" && request["type"] === "config") {
-        sendResponse(horseConfig);
-        return;
-    }
-    if (request["mode"] === "set" && request["type"] === "config") {
-        setHorseConfig({ "horseConfig": request["data"] });
-        sendResponse({ "status": "success" });
+    if (request["mode"] === "set") {
+        main.set.handleDataRequests(request, sendResponse, horseData, horseConfig, setHorseData, setHorseConfig);
         return;
     }
     console.log(request);
-    sendResponse({ "data": "dada" });
+    sendResponse({ "status": "missing" });
 }
+
+
+
 
 
 
 const callListeners = () => {
     chrome.runtime.onInstalled.addListener(function(details) {
-        if (details.reason == "install") {
-
-            chrome.storage.sync.get("horseConfig", setHorseConfig);
-            chrome.storage.local.get("horseData", setHorseData);
-        } else if (details.reason == "update") {
+        if (details.reason == "install" || details.reason == "update") {
 
             chrome.storage.sync.get("horseConfig", setHorseConfig);
             chrome.storage.local.get("horseData", setHorseData);
         }
     });
 
-
     chrome.tabs.onUpdated.addListener((tabId, status, tab) => {
 
+        if (status["status"] !== "complete" || !tab.url.includes("horsereality.com")) return;
 
-        if (status["status"] !== "complete" || !tab.url.includes("horsereality.com")) {
-            return;
-        }
         chrome.storage.sync.get("horseConfig", setHorseConfig);
         chrome.storage.local.get("horseData", setHorseData);
 
-        let pattern = new RegExp("horsereality.com/horses/\\d+/.*");
-        if (pattern.test(tab.url)) {
+        var hasPattern = false;
+        var tabType = "";
+
+        var patternDict = { "horsereality.com/horses/\\d+/.*": "horsePage" }
+
+        for (let [key, value] of Object.entries(patternDict)) {
+            var pattern = new RegExp(key);
+            if (pattern.test(tab.url)) {
+                tabType = value;
+                hasPattern = true;
+                break;
+            }
+        }
+
+        if (hasPattern) {
             chrome.tabs.sendMessage(tabId, {
-                url: tab.url
+                url: tab.url,
+                tabType: tabType
             }, (response) => {
-                console.log(response);
                 if (response["status"] && response["status"] === "success") return;
                 else console.log(response);
             });
@@ -100,6 +78,7 @@ const callListeners = () => {
 
 
     });
+
     chrome.runtime.onMessage.addListener(handleDataRequests);
 
 }
