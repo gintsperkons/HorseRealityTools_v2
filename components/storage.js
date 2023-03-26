@@ -20,7 +20,7 @@ export var storage = {
             "type": "config",
             "subType": subtype,
             "data": tabName
-        }, );
+        }, function(response) {});
     },
 
     getRandomName: function(gender, callback) {
@@ -29,5 +29,18 @@ export var storage = {
             "type": "name",
             "gender": gender
         }, callback);
-    }
+    },
+    getCurrentHorse: function(callback) {
+        chrome.runtime.sendMessage({
+            "mode": "get",
+            "type": "horse",
+            "item": "current"
+        }, callback);
+    },
+    getHorseData: function(callback) {
+        chrome.runtime.sendMessage({
+            "mode": "get",
+            "type": "horse"
+        }, callback);
+    },
 }

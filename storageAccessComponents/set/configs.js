@@ -5,6 +5,10 @@ export var configs = {
             setHorseConfigSubType(request["subType"], request["data"], horseConfig, setHorseConfig);
             sendResponse({ "status": "success" });
             return;
+        } else {
+            main.saveHorseConfig({ "horseConfig": request["data"] }, setHorseConfig);
+            sendResponse({ "status": "success" });
+            return;
         }
     }
 }

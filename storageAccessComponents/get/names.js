@@ -4,11 +4,11 @@ export var names = {
 
     handleDataRequests: function(request, sendResponse) {
         if (request["gender"] === "stallion") {
-            var horseName = getOneMare()
+            var horseName = getOneStallion()
             sendResponse({ "name": horseName });
         }
         if (request["gender"] === "mare") {
-            var horseName = getOneStallion()
+            var horseName = getOneMare()
             sendResponse({ "name": horseName });
         }
     }

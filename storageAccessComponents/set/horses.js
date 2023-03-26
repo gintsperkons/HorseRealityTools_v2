@@ -6,6 +6,7 @@ export var horses = {
             sendResponse({ "status": "success" });
             main.saveHorseData({ "horseData": horseData }, setHorseData);
             return;
+
         }
     }
 
