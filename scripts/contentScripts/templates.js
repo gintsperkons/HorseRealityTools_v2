@@ -40,8 +40,17 @@ const achevementCountText = (template, base, num) => {
     return template.replace(base, base.replace("{", "").replace("}", "").toUpperCase() + num);
 }
 
+const createErrorBoard = () => {
+    if (!document.getElementById("errorMassagesUpdateTab")) {
+        var element = document.createElement("p");
+        element.id = "errorMassagesUpdateTab";
+        document.getElementById("tab_update2").getElementsByClassName("table_con")[0].appendChild(element);
+    }
+}
+
 const templateToText = (template) => {
-    // overall
+    var errorText = ""
+        // overall
     horseName = horseData["name"];
     template = template.replace("{name}", horseName);
     rName = getRandomName(horseData["gender"]);
@@ -50,66 +59,77 @@ const templateToText = (template) => {
     try {
         gp = horseData["genetics"]["geneticPotential"];
         template = template.replace("{gp}", gp);
+        document.getElementById("errorMassagesUpdateTab").textContent = "";
     } catch (error) {
-        if (!document.getElementById("errorMassagesUpdateTab")) {
-            var element = document.createElement("p");
-            element.id = "errorMassagesUpdateTab";
-            document.getElementById("tab_update2").getElementsByClassName("table_con")[0].appendChild(element);
-        }
-        document.getElementById("errorMassagesUpdateTab").textContent = error;
+        errorText = "Can not get genetics information!";
+        console.log(error);
     }
 
     //training
-    ctl = trainingLevelsToShorts[horseData["training"]["currentTrainingLevel"]];
-    template = template.replace("{ctl}", ctl);
-    cobt = ""
-    if (horseData["training"]["currentTraining"].trim() === "Basic Training".trim()) {
-        cobt = getBestTraining().trim();
-    } else {
-        cobt = horseData["training"]["currentTraining"].trim();
+    try {
+        ctl = trainingLevelsToShorts[horseData["training"]["currentTrainingLevel"]];
+        template = template.replace("{ctl}", ctl);
+        cobt = ""
+        if (horseData["training"]["currentTraining"].trim() === "Basic Training".trim()) {
+            cobt = getBestTraining().trim();
+        } else {
+            cobt = horseData["training"]["currentTraining"].trim();
+        }
+        template = template.replace("{cobt}", trainingToShort[cobt]);
+    } catch (error) {
+        errorText = "Can not get training information!";
+        console.log(error);
     }
-    template = template.replace("{cobt}", trainingToShort[cobt]);
     //achievements
     vg = 0;
     g = 0;
     a = 0;
     ba = 0;
     p = 0;
-    for (const achieve of Object.keys(horseData["achievements"])) {
-        if (horseData["achievements"][achieve].trim() === "Very good") {
-            vg += 1;
+    try {
+        for (const achieve of Object.keys(horseData["achievements"])) {
+            if (horseData["achievements"][achieve].trim() === "Very good") {
+                vg += 1;
+            }
+            if (horseData["achievements"][achieve].trim() === "Good") {
+                g += 1;
+            }
+            if (horseData["achievements"][achieve].trim() === "Average") {
+                a += 1;
+            }
+            if (horseData["achievements"][achieve].trim() === "Below average") {
+                ba += 1;
+            }
+            if (horseData["achievements"][achieve].trim() === "Poor") {
+                p += 1;
+            }
         }
-        if (horseData["achievements"][achieve].trim() === "Good") {
-            g += 1;
-        }
-        if (horseData["achievements"][achieve].trim() === "Average") {
-            a += 1;
-        }
-        if (horseData["achievements"][achieve].trim() === "Below average") {
-            ba += 1;
-        }
-        if (horseData["achievements"][achieve].trim() === "Poor") {
-            p += 1;
-        }
+        template = achevementCountText(template, "{vg}", vg);
+        template = achevementCountText(template, "{g}", g);
+        template = achevementCountText(template, "{a}", a);
+        template = achevementCountText(template, "{ba}", ba);
+        template = achevementCountText(template, "{p}", p);
+        template = template.replace("  ", " ").replace("   ", " ").replace("    ", " ").replace("     ", " ");
+        document.getElementById("errorMassagesUpdateTab").textContent = "";
+    } catch (error) {
+        errorText = "Can not get achievements information!";
+        console.log(error);
     }
-    template = achevementCountText(template, "{vg}", vg);
-    template = achevementCountText(template, "{g}", g);
-    template = achevementCountText(template, "{a}", a);
-    template = achevementCountText(template, "{ba}", ba);
-    template = achevementCountText(template, "{p}", p);
-    template = template.replace("  ", " ").replace("   ", " ").replace("    ", " ").replace("     ", " ");
     //health
     //offspring
     //summary
     //update
 
-
+    createErrorBoard();
+    document.getElementById("errorMassagesUpdateTab").textContent = errorText;
     return template
 }
 
 
 
 const addTemplateElements = (parent, conf, confName) => {
+
+
 
     el = document.createElement("option")
     el.textContent = "Select template"
@@ -118,21 +138,24 @@ const addTemplateElements = (parent, conf, confName) => {
         el.value = horseData["tagline"]
     }
     parent.appendChild(el)
-    for (const templateKey of Object.keys(conf[confName])) {
-        template = conf[confName][templateKey]
-        el = document.createElement("option")
-        el.textContent = templateToText(template)
-        el.value = template
-        parent.appendChild(el)
+    if (conf && conf[confName]) {
+        for (const templateKey of Object.keys(conf[confName])) {
+            template = conf[confName][templateKey]
+            el = document.createElement("option")
+            el.textContent = templateToText(template)
+            el.value = template
+            parent.appendChild(el)
+        }
+
     }
+
 }
 
 const addUpdateData = (conf) => {
     if (!conf) {
         return
     }
-
-
+    console.log("update")
     tab = document.getElementById(tabList["UPDATE"]);
 
     nameRow = tab.getElementsByClassName("even")[0];
@@ -144,6 +167,7 @@ const addUpdateData = (conf) => {
     if (!nameRowChildListNames.includes("select")) {
         nameList = document.createElement("select");
         nameList.style.width = "150px"
+        nameList.setAttribute("id", "nameTemplateList");
         nameList.addEventListener("change", (r) => {
             val = document.querySelector("option[value='" + r.target.value + "']").textContent.trim()
             if (val === "Select template") {
@@ -152,6 +176,10 @@ const addUpdateData = (conf) => {
             document.getElementById("changename").value = val;
         });
         nameRow.appendChild(nameList);
+        addTemplateElements(nameList, conf["templates"], "nameTemplate")
+    } else {
+        nameList = document.getElementById("nameTemplateList");
+        nameList.innerHTML = "";
         addTemplateElements(nameList, conf["templates"], "nameTemplate")
     }
     taglineRow = tab.getElementsByClassName("odd")[0];
@@ -162,6 +190,7 @@ const addUpdateData = (conf) => {
     if (!taglineRowChildListNames.includes("select")) {
         taglineList = document.createElement("select");
         taglineList.style.width = "150px"
+        taglineList.setAttribute("id", "taglineTemplateList");
         taglineList.addEventListener("change", (r) => {
             val = document.querySelector("option[value='" + r.target.value + "']").textContent.trim()
             if (val === "Select template") {
@@ -170,6 +199,10 @@ const addUpdateData = (conf) => {
             document.getElementById("changetagline").value = val;
         });
         taglineRow.appendChild(taglineList);
+        addTemplateElements(taglineList, conf["templates"], "taglineTemplate")
+    } else {
+        taglineList = document.getElementById("taglineTemplateList");
+        taglineList.innerHTML = "";
         addTemplateElements(taglineList, conf["templates"], "taglineTemplate")
     }
 
@@ -182,15 +215,18 @@ function addUpdateDataWhenReady(event) {
         if (document.getElementById("tab_update2").textContent.trim() != "") {
             clearInterval(intervalVal);
             storage.getHorseConfig(addUpdateData);
+            addListeners.addTabUpdater();
         }
     }, 10);
 }
+
+
 
 function getUpdateTab() {
     if (document.getElementById("tab_update2").textContent.trim() != "") {
         storage.getHorseConfig(addUpdateData);
     }
-    document.getElementById("tab_update").addEventListener("click", addUpdateDataWhenReady)
+    document.getElementById("tab_update").addEventListener("click", addUpdateDataWhenReady, { "once": true })
 };
 
 
@@ -199,5 +235,10 @@ function getUpdateTab() {
 var templates = {
     callNeeded: function(result) {
         getUpdateTab();
+    },
+    updateTab: function(tab) {
+        if (tab == "update") {
+            storage.getHorseConfig(addUpdateData);
+        }
     }
 }

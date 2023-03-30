@@ -20,6 +20,7 @@
     "content_scripts": [{
         "matches": ["*://*.horsereality.com/*"],
         "js": [
+            "scripts/contentScripts/utils.js",
             "scripts/contentScripts/storage.js",
             "scripts/contentScripts/tools.js",
             "scripts/contentScripts/templates.js",

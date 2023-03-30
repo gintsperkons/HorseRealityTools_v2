@@ -66,6 +66,11 @@ function exportCSV(data, fileName) {
         result += data[key]["birthDay"] + ",";
         result += data[key]["age"] + ",";
         result += data[key]["horseHeight"] + ",";
+        result += data[key]["owner"] + ",";
+        result += data[key]["ownerUrl"] + ",";
+        result += data[key]["ownerRanch"] + ",";
+        result += data[key]["bornRanch"] + ",";
+        result += data[key]["bornRanchUrl"] + ",";
         result += data[key]["tagline"] + ",";
         result += data[key]["url"] + ",";
         result += data[key]["summary"]["pregnant"] + ",";

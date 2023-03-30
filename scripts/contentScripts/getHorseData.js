@@ -52,6 +52,11 @@ const getOveralData = () => {
     horseData["age"] = age;
     horseData["birthDay"] = infotext.getElementsByClassName("right")[3].textContent.trim();
     horseData["horseHeight"] = infotext.getElementsByClassName("right")[4].textContent.trim();
+    horseData["owner"] = infotext.getElementsByClassName("right")[6].innerHTML.split("\n")[2].split("<br>")[0].trim();
+    horseData["ownerRanch"] = horseData["owner"] = infotext.getElementsByClassName("right")[6].innerHTML.split("\n")[2].split("<br>")[1].split(" ")[0].trim();
+    horseData["ownerUrl"] = document.getElementsByClassName("horse_left")[0].getElementsByClassName("right")[6].getElementsByTagName("a")[0].href.trim();
+    horseData["bornRanch"] = document.getElementsByClassName("horse_left")[0].getElementsByTagName("a")[0].textContent.trim();
+    horseData["bornRanchUrl"] = document.getElementsByClassName("horse_left")[0].getElementsByTagName("a")[0].href.trim()
     splitURL = document.URL.split("/")
     delete splitURL[5]
     link = ""
@@ -84,6 +89,7 @@ const getSummaryData = () => {
 }
 
 const getTrainingData = () => {
+    var currentProgress = -1;
     if (!horseData["training"]) {
         horseData["training"] = {};
     }
@@ -96,6 +102,10 @@ const getTrainingData = () => {
         if (currentProgress < 100) {
             break
         }
+    }
+    if (currentProgress == -1) {
+        horseData["training"]["currentTraining"] = "undefined";
+        horseData["training"]["currentTrainingLevel"] = "undefined";
     }
     if (currentProgress == 100 && trainingLevelsToShorts[horseData["training"]["currentTrainingLevel"]] === "Base4") {
         horseData["training"]["currentTrainingLevel"] = "Base Complete";
@@ -132,7 +142,7 @@ const getGeneticData = () => {
     horseData["genetics"]["advice"] = tab.getElementsByClassName("genetic_table_row")[14].textContent.trim().split("\n")[0].trim()
     horseData["genetics"]["bestTraining"]
     wordListTemp = ["Dressage", "Jumping", "Reining", "Eventing", "Endurance", "Racing", "Driving"]
-    text = horseData["genetics"]["advice"].split("I think that ")[1]
+    text = horseData["genetics"]["advice"].split("I think")[1]
     words = text.trim().replaceAll(",", "").replaceAll(".", "").split(" ")
     for (let i = 0; i < words.length; i++) {
         if (wordListTemp.includes(words[i])) {

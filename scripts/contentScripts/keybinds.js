@@ -1,63 +1,76 @@
+var horsePagePattern = new RegExp("horsereality.com/horses/\\d+/.*");
 var keybinds = {
-    callNeeded: function() {
-        document.addEventListener("keyup", handleHorseKeyEvents)
+    addHorsePageKeybinds: function() {
+        document.addEventListener("keyup", handleHorsePageKeyEvents);
+    },
+    addRidingSchoolPageKeybinds: function() {
+        document.addEventListener("keyup", handleRidingSchoolPageKeyEvents);
+    },
+    addGlobalKeybinds: function() {
+        document.addEventListener("keyup", handleGlobalKeyEvents);
     }
 }
-var horsePagePattern = new RegExp("horsereality.com/horses/\\d+/.*");
+const testsBeforeKeybinds = (event, horseConfig) => {
+    var target = event.target.tagName;
+    if (target == "INPUT") {
+        return;
+    }
+    if (!horseConfig) {
+        horseConfig = {};
+        return;
+    }
+    if (!horseConfig["keybinds"]) {
+        return;
+    }
+};
 
+const handleRidingSchoolPageKeyEvents = (e) => {
+    storage.getHorseConfig((horseConfig) => {
+        if (testsBeforeKeybinds(e, horseConfig)) return;
+        if (e.code === horseConfig["keybinds"]["ridingSchoolTask"]) {
+            if (!document.getElementsByClassName("timer_jobs")) {
+                var jobList = document.getElementsByClassName("job-item");
+                lastJob = jobList[jobList.length - 1];
+                var button = lastJob.getElementsByClassName("btn")[0];
+                button.click();
+            }
+        }
 
+    })
+}
 
-const handleHorseKeyEvents = (event) => {
-    console.log("te")
-    e = event
-    storage.getHorseConfig((result) => {
-        var target = event.target.tagName;
-        if (target == "INPUT") {
-            return;
-        }
-        console.log(result);
-        if (!result) {
-            horseConfig = {};
-            return;
-        } else {
-            horseConfig = result;
-        }
-        console.log(result);
-        if (!horseConfig["keybinds"]) {
-            return;
-        }
-        console.log(target);
+const handleGlobalKeyEvents = (e) => {
+    storage.getHorseConfig((horseConfig) => {
+        if (testsBeforeKeybinds(e, horseConfig)) return;
         if (e.code === horseConfig["keybinds"]["horsePageAll"] && window.location.href != "https://v2.horsereality.com/horses/stall/all") {
             window.open("https://v2.horsereality.com/horses/stall/all", "_self");
-        }
-        if (e.code === horseConfig["keybinds"]["marketHomePage"] && window.location.href != "https://v2.horsereality.com/market") {
+        } else if (e.code === horseConfig["keybinds"]["marketHomePage"] && window.location.href != "https://v2.horsereality.com/market") {
             window.open("https://v2.horsereality.com/market", "_self");
-        }
-        if (e.code === horseConfig["keybinds"]["bankPage"] && window.location.href != "https://v2.horsereality.com/bank") {
+        } else if (e.code === horseConfig["keybinds"]["bankPage"] && window.location.href != "https://v2.horsereality.com/bank") {
             window.open("https://v2.horsereality.com/bank", "_self");
-        }
-        if (e.code === horseConfig["keybinds"]["laboratoryPage"] && window.location.href != "https://v2.horsereality.com/laboratory") {
+        } else if (e.code === horseConfig["keybinds"]["laboratoryPage"] && window.location.href != "https://v2.horsereality.com/laboratory") {
             window.open("https://v2.horsereality.com/laboratory", "_self");
-        }
-        if (e.code === horseConfig["keybinds"]["ridingSchoolPage"] && window.location.href != "https://v2.horsereality.com/ridingschool") {
+        } else if (e.code === horseConfig["keybinds"]["ridingSchoolPage"] && window.location.href != "https://v2.horsereality.com/ridingschool") {
             window.open("https://v2.horsereality.com/ridingschool", "_self");
-        }
-        if (e.code === horseConfig["keybinds"]["vetarinaryPage"] && window.location.href != "https://v2.horsereality.com/veterinary") {
+        } else if (e.code === horseConfig["keybinds"]["vetarinaryPage"] && window.location.href != "https://v2.horsereality.com/veterinary") {
             window.open("https://v2.horsereality.com/veterinary", "_self");
-        }
-        if (e.code === horseConfig["keybinds"]["currencyExchangePage"] && window.location.href != "https://www.horsereality.com/currency-exchange") {
+        } else if (e.code === horseConfig["keybinds"]["currencyExchangePage"] && window.location.href != "https://www.horsereality.com/currency-exchange") {
             window.open("https://www.horsereality.com/currency-exchange", "_self");
-        }
-        if (e.code === horseConfig["keybinds"]["cityPage"] && window.location.href != "https://v2.horsereality.com/city") {
+        } else if (e.code === horseConfig["keybinds"]["cityPage"] && window.location.href != "https://v2.horsereality.com/city") {
             window.open("https://v2.horsereality.com/city", "_self");
-        }
-        if (e.code === horseConfig["keybinds"]["wikiPage"] && window.location.href != "https://horsereality.wiki") {
+        } else if (e.code === horseConfig["keybinds"]["wikiPage"] && window.location.href != "https://horsereality.wiki") {
             window.open("https://horsereality.wiki", "_self");
-        }
-        if (e.code === horseConfig["keybinds"]["profilePage"] && window.location.href != document.getElementsByClassName("user-nav")[0].getElementsByClassName("btn")[0].href) {
+        } else if (e.code === horseConfig["keybinds"]["profilePage"] && window.location.href != document.getElementsByClassName("user-nav")[0].getElementsByClassName("btn")[0].href) {
             document.getElementsByClassName("user-nav")[0].getElementsByClassName("btn")[0].click();
         }
-        if (e.code === horseConfig["keybinds"]["trainHorse"] && horsePagePattern.test(window.location.href)) {
+    })
+}
+
+const handleHorsePageKeyEvents = (e) => {
+    storage.getHorseConfig((horseConfig) => {
+        if (testsBeforeKeybinds(e, horseConfig)) return;
+
+        if (e.code === horseConfig["keybinds"]["trainHorse"]) {
             tab = document.getElementById("tab_training2").getElementsByClassName("table_con")[0]
 
             levelList = document.getElementsByClassName("grid_4 training_right")[0].getElementsByClassName("block")[3].getElementsByClassName("trainbar")
@@ -150,9 +163,7 @@ const handleHorseKeyEvents = (event) => {
                     itemFinal.click();
                 }
             }
-        }
-        if (e.code === horseConfig["keybinds"]["careForHorse"] && horsePagePattern.test(window.location.href)) {
-
+        } else if (e.code === horseConfig["keybinds"]["careForHorse"]) {
             tab = document.getElementById("tab_summary2").getElementsByClassName("table_con")[0]
             if (tab) {
                 careList = tab.getElementsByClassName("half_block")[0].getElementsByClassName("horse_blocks");
@@ -160,31 +171,21 @@ const handleHorseKeyEvents = (event) => {
                     careList[i].click();
                 }
             }
-
-
-        }
-        if (e.code === horseConfig["keybinds"]["tabSummary"] && horsePagePattern.test(window.location.href)) {
+        } else if (e.code === horseConfig["keybinds"]["tabSummary"]) {
             document.getElementById("tab_summary").click();
-        }
-        if (e.code === horseConfig["keybinds"]["tabTraining"] && horsePagePattern.test(window.location.href)) {
+        } else if (e.code === horseConfig["keybinds"]["tabTraining"]) {
             document.getElementById("tab_training").click();
-        }
-        if (e.code === horseConfig["keybinds"]["tabGenetics"] && horsePagePattern.test(window.location.href)) {
+        } else if (e.code === horseConfig["keybinds"]["tabGenetics"]) {
             document.getElementById("tab_genetics").click();
-        }
-        if (e.code === horseConfig["keybinds"]["tabAchievements"] && horsePagePattern.test(window.location.href)) {
+        } else if (e.code === horseConfig["keybinds"]["tabAchievements"]) {
             document.getElementById("tab_achievements").click();
-        }
-        if (e.code === horseConfig["keybinds"]["tabOffspring"] && horsePagePattern.test(window.location.href)) {
+        } else if (e.code === horseConfig["keybinds"]["tabOffspring"]) {
             document.getElementById("tab_offspring").click();
-        }
-        if (e.code === horseConfig["keybinds"]["tabHealth"] && horsePagePattern.test(window.location.href)) {
+        } else if (e.code === horseConfig["keybinds"]["tabHealth"]) {
             document.getElementById("tab_health").click();
-        }
-        if (e.code === horseConfig["keybinds"]["tabUpdate"] && horsePagePattern.test(window.location.href)) {
+        } else if (e.code === horseConfig["keybinds"]["tabUpdate"] && isMyHorse()) {
             document.getElementById("tab_update").click();
-        }
-        if (e.code === horseConfig["keybinds"]["nextHorse"] && horsePagePattern.test(window.location.href)) {
+        } else if (e.code === horseConfig["keybinds"]["nextHorse"]) {
             result = document.getElementsByClassName("horse_arrows")[0].getElementsByTagName("a");
             if (result.length == 1) {
                 arrowName = result[0].getElementsByTagName("img")[0].className;
@@ -195,8 +196,7 @@ const handleHorseKeyEvents = (event) => {
             if (result.length == 2) {
                 result[1].click();
             }
-        }
-        if (e.code === horseConfig["keybinds"]["previousHorse"] && horsePagePattern.test(window.location.href)) {
+        } else if (e.code === horseConfig["keybinds"]["previousHorse"]) {
             result = document.getElementsByClassName("horse_arrows")[0].getElementsByTagName("a");
             if (result.length == 1) {
                 arrowName = result[0].getElementsByTagName("img")[0].className;
@@ -207,9 +207,6 @@ const handleHorseKeyEvents = (event) => {
             if (result.length == 2) {
                 result[0].click();
             }
-        }
-        if (e.code === horseConfig["keybinds"][""] && horsePagePattern.test(window.location.href)) {
-
         }
 
     })

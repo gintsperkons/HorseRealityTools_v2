@@ -4,6 +4,12 @@ var addListeners = {
             tab.addEventListener("click", handleTabTitleClick);
         }
     },
+    addTabUpdater: function() {
+        document.getElementById("tab_update").addEventListener("click", (event) => {
+            templates.updateTab("update");
+        })
+    }
+
 }
 
 function handleTabTitleClick(event) {
@@ -17,6 +23,8 @@ function handleTabTitleClick(event) {
     }
     getTabData(intervalVal, event.target.id + "2");
 }
+
+
 
 function getTabData(intervalVal, tabName) {
     clearInterval(intervalVal);

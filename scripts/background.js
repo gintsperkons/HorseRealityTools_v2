@@ -57,7 +57,12 @@ const callListeners = () => {
         var hasPattern = false;
         var tabType = "";
 
-        var patternDict = { "horsereality.com/horses/\\d+/.*": "horsePage" }
+        var patternDict = {
+            "horsereality.com/horses/\\d+/.*": "horsePage",
+            "horsereality.com/horses/stall/.+": "stallPage",
+            "horsereality.com/ridingschool": "ridingschoolPage",
+            "horsereality.com": "genericPage"
+        }
 
         for (let [key, value] of Object.entries(patternDict)) {
             var pattern = new RegExp(key);

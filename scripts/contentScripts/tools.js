@@ -2,7 +2,6 @@ var horsePagePattern = new RegExp("horsereality.com/horses/\\d+/.*");
 
 
 const autoCare = () => {
-    console.log("asgf")
     setTimeout(function() {
         tab = document.getElementById("tab_summary2").getElementsByClassName("table_con")[0]
         if (tab) {
@@ -156,6 +155,9 @@ var tools = {
             return;
         } else {
             horseConfig = result;
+        }
+        if (!horseConfig["tools"]) {
+            horseConfig["tools"] = {}
         }
         if (horseConfig["tools"]) {
             if (horseConfig["tools"]["autoCare"]) {
