@@ -260,6 +260,15 @@
                             </label>
                         </div>
                     </div>
+                    <div class="hFlex row">
+                        <p class="bindDescription">Auto Click All Tabs</p>
+                        <div class="buttonContainer hFlex">
+                            <label class="switch">
+                                <input type="checkbox" id="autoAllTabs" >
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
                     <hr>
                     <div class="hFlex row">
                         <label for="toolTrainPrimaryTerrain">Choose primary training terrain:</label>
@@ -294,7 +303,15 @@
                     </select>
                     </div>
                     <hr>
-                    <div>
+                    <div id="ageColor">
+                        <label for="ageColorSelect">Age background:</label>
+                        <input type="color" id="ageColorSelect" name="ageColorSelect" value="#ffffff">
+                        <label for="ageColorSelect">Min age:</label>
+                        <input type="number" id="minAge" style="width:50px" value="0">
+                        <label for="ageColorSelect">Max age:</label>
+                        <input type="number" id="maxAge" style="width:50px" value="0">
+                    </div>
+                        <div>
                         after settings are set reload the page
                     </div>
                     <div>

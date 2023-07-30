@@ -53,7 +53,7 @@ const getOveralData = () => {
     horseData["birthDay"] = infotext.getElementsByClassName("right")[3].textContent.trim();
     horseData["horseHeight"] = infotext.getElementsByClassName("right")[4].textContent.trim();
     horseData["owner"] = infotext.getElementsByClassName("right")[6].innerHTML.split("\n")[2].split("<br>")[0].trim();
-    horseData["ownerRanch"] = horseData["owner"] = infotext.getElementsByClassName("right")[6].innerHTML.split("\n")[2].split("<br>")[1].split(" ")[0].trim();
+    horseData["ownerRanch"] = infotext.getElementsByClassName("right")[6].innerHTML.split("<br>")[1].replace("</a>", "").trim();
     horseData["ownerUrl"] = document.getElementsByClassName("horse_left")[0].getElementsByClassName("right")[6].getElementsByTagName("a")[0].href.trim();
     horseData["bornRanch"] = document.getElementsByClassName("horse_left")[0].getElementsByTagName("a")[0].textContent.trim();
     horseData["bornRanchUrl"] = document.getElementsByClassName("horse_left")[0].getElementsByTagName("a")[0].href.trim()
@@ -127,8 +127,8 @@ const getGeneticData = () => {
     }
     tab = document.getElementById(tabList["GENETICS"])
     genetics = tab.getElementsByClassName("genetics")[1]
-    tableGP = tab.getElementsByClassName("genetic_table_row")[13]
-    horseData["genetics"]["geneticPotential"] = genetics.getElementsByClassName("top")[0].getElementsByClassName("right")[0].textContent.split(" ")[2].trim()
+    tableGP = tab.getElementsByClassName("genetic_table_row")[14]
+    horseData["genetics"]["geneticPotential"] = genetics.getElementsByClassName("top")[0].getElementsByClassName("right")[0].textContent.trim().split(" ")[2].trim()
     horseData["genetics"]["acceleration"] = tableGP.getElementsByClassName("left")[0].getElementsByClassName("genetic_stats")[0].textContent.trim()
     horseData["genetics"]["agility"] = tableGP.getElementsByClassName("left")[0].getElementsByClassName("genetic_stats")[1].textContent.trim()
     horseData["genetics"]["balance"] = tableGP.getElementsByClassName("left")[0].getElementsByClassName("genetic_stats")[2].textContent.trim()
@@ -139,7 +139,7 @@ const getGeneticData = () => {
     horseData["genetics"]["stamina"] = tableGP.getElementsByClassName("right")[0].getElementsByClassName("genetic_stats")[2].textContent.trim()
     horseData["genetics"]["strength"] = tableGP.getElementsByClassName("right")[0].getElementsByClassName("genetic_stats")[3].textContent.trim()
     horseData["genetics"]["surefootedness"] = tableGP.getElementsByClassName("right")[0].getElementsByClassName("genetic_stats")[4].textContent.trim()
-    horseData["genetics"]["advice"] = tab.getElementsByClassName("genetic_table_row")[14].textContent.trim().split("\n")[0].trim()
+    horseData["genetics"]["advice"] = tab.getElementsByClassName("genetic_table_row")[15].textContent.trim().split("\n")[0].trim()
     horseData["genetics"]["bestTraining"]
     wordListTemp = ["Dressage", "Jumping", "Reining", "Eventing", "Endurance", "Racing", "Driving"]
     text = horseData["genetics"]["advice"].split("I think")[1]
