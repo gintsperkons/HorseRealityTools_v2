@@ -35,6 +35,7 @@ const callListeners = () => {
       "horsereality.com/horses/\\d+/.*": "horsePage",
       "horsereality.com/horses/stall/.+": "stallPage",
       "horsereality.com/ridingschool": "ridingschoolPage",
+      "horsereality.com/laboratory":"laboratoryPage",
       "horsereality.com": "genericPage",
     };
 

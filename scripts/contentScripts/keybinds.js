@@ -6,15 +6,16 @@ var keybinds = {
   addRidingSchoolPageKeybinds: function () {
     document.addEventListener("keyup", handleRidingSchoolPageKeyEvents);
   },
+  addLaboratoryPageKeybinds: function () {
+    document.addEventListener("keyup", handleLaboratoryKeyEvents);
+  },
   addGlobalKeybinds: function () {
     document.addEventListener("keyup", handleGlobalKeyEvents);
   },
 };
 const testsBeforeKeybinds = (event, horseConfig) => {
   var target = event.target.tagName;
-  console.log(target)
-  console.log(target ===  "INPUT"||target==="TEXTAREA")
-  if (target ===  "INPUT"||target==="TEXTAREA") {
+  if (target ===  "INPUT"||target==="TEXTAREA"||target==="SELECT") {
     return True;
   }
   if (!horseConfig) {
@@ -26,8 +27,29 @@ const testsBeforeKeybinds = (event, horseConfig) => {
   }
 };
 
+
+
+const handleLaboratoryKeyEvents = (e) => {
+  storage.getHorseConfig((horseConfig) => {
+    
+    horseConfig = horseConfig["data"]["horseToolConfig"];
+    if (testsBeforeKeybinds(e, horseConfig)) return;
+    if (e.code === horseConfig["keybinds"]["laboratoryCheckAll"]) {
+      checkList = document.querySelectorAll(".checkbox-label .gene-parent")
+      for (let item of checkList) {
+          setTimeout(item.click(),100)
+          
+      }
+    }
+  });
+
+
+
+}
+
 const handleRidingSchoolPageKeyEvents = (e) => {
   storage.getHorseConfig((horseConfig) => {
+    horseConfig = horseConfig["data"]["horseToolConfig"];
     if (testsBeforeKeybinds(e, horseConfig)) return;
     if (e.code === horseConfig["keybinds"]["ridingSchoolTask"]) {
       if (!document.getElementsByClassName("timer_jobs")) {

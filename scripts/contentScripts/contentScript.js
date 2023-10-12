@@ -54,6 +54,8 @@ function handleDifferentPages(tabType) {
     });
   } else if (tabType === "ridingschoolPage") {
     keybinds.addRidingSchoolPageKeybinds();
+  } else if (tabType === "laboratoryPage") {
+    keybinds.addLaboratoryPageKeybinds();
   } else if (tabType === "genericPage") {
   }
   keybinds.addGlobalKeybinds();
