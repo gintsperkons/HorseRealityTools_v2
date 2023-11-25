@@ -129,6 +129,10 @@ hr {
     margin: 10px;
 }
 
+.priceMultiplierNumbers{
+    width: 50px;
+}
+
 .keyRemoveButtonImg {
     visibility: visible;
 }

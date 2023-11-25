@@ -2,41 +2,7 @@ var horseData = {};
 var randomGirlName = "";
 var randomBoyName = "";
 
-var tabContent = {
-  horsePage: function (isMine) {
-    storage.getHorseData(
-      document.getElementById("hid").value.trim(),
-      function (data) {
-        if (isMine) {
-          storage.getHorseRandomName("mare", function (data) {
-            randomGirlName = data["name"];
-          });
-          storage.getHorseRandomName("stallion", function (data) {
-            randomBoyName = data["name"];
-          });
 
-          storage.getHorseConfig(tools.callNeeded);
-          templates.callNeeded();
-        }
-
-        //merge horse data
-        const temp = horseData;
-        horseData = Object.assign({}, temp, data);
-
-        getHorseData.getTabDataBase("overAll");
-        var intervalVal = setInterval(() => {
-          for (const tabData of document.getElementsByClassName("tabtext")) {
-            if (tabData.textContent.trim() != "") {
-              clearInterval(intervalVal);
-              getHorseData.getTabDataBase(tabData.id);
-            }
-          }
-        }, 500);
-      }
-    );
-    addListeners.addListeners();
-  },
-};
 
 function handleDifferentPages(tabType) {
   if (tabType === "horsePage") {
@@ -56,7 +22,12 @@ function handleDifferentPages(tabType) {
     keybinds.addRidingSchoolPageKeybinds();
   } else if (tabType === "laboratoryPage") {
     keybinds.addLaboratoryPageKeybinds();
+
+  } else if (tabType === "sellPage") {
+    tabContent.salePage();
+    console.log("salePage");
   } else if (tabType === "genericPage") {
+
   }
   keybinds.addGlobalKeybinds();
 }

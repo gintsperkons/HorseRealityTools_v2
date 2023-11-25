@@ -36,7 +36,8 @@ const callListeners = () => {
       "horsereality.com/horses/stall/.+": "stallPage",
       "horsereality.com/ridingschool": "ridingschoolPage",
       "horsereality.com/laboratory":"laboratoryPage",
-      "horsereality.com": "genericPage",
+      "horsereality.com/market/office/my-sales/horses/create":"sellPage",
+      "horsereality.com": "genericPage"
     };
 
     for (let [key, value] of Object.entries(patternDict)) {

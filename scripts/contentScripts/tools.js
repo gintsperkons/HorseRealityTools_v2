@@ -219,6 +219,25 @@ const autoAllTabs = () => {
 };
 
 var tools = {
+  setSaleDuration: function (result) {
+    if (!result) {
+      horseConfig = {};
+      console.log("No Horse Configuration Found!");
+      return;
+    } else {
+      horseConfig = result;
+    }
+    if (!horseConfig["tools"]) {
+      horseConfig["tools"] = {};
+      console.log("No Tools Settings Found!");
+      return;
+    }
+    if (horseConfig["tools"]["saleDefaultDurationList"]>0) {
+      document.querySelector("select[name='duration']").value = horseConfig["tools"]["saleDefaultDurationList"]
+    }
+    console.log(horseConfig["tools"])
+  },
+
   callNeeded: function (result) {
     result = result["data"]["horseToolConfig"];
     if (!result) {
