@@ -45,7 +45,7 @@ function exportCSV(data, fileName) {
     "Current training,Current training level," +
     "Genetic potential,Acceleration,Agility,Balance,Bascule,Pulling power,Speed,Sprint,Stamina,Strength,Surefootedness,Advice,Best training," +
     "Walk,Trot,Canter,Gallop,Posture,Head,Neck,Back,Shoulders,Frontlegs,Hindquarters,Socks," +
-    "Offsprings count" +
+    "Offsprings count," +
     "Fertility,Colic resistance,Hoof quality,Back problems,Respiratory disease,Resistance to lameness," +
     "\n";
   for (const key of Object.keys(data)) {
@@ -98,7 +98,7 @@ function exportCSV(data, fileName) {
       result += data[key]["genetics"]["stamina"] + ",";
       result += data[key]["genetics"]["strength"] + ",";
       result += data[key]["genetics"]["surefootedness"] + ",";
-      result += data[key]["genetics"]["advice"] ? data[key]["genetics"]["advice"].replaceAll(",", "") : "undefined";
+      result += (data[key]["genetics"]["advice"] ? data[key]["genetics"]["advice"].replaceAll(",", "") : "undefined") + ",";
       result += data[key]["genetics"]["bestTraining"] + ",";
     } else {
       for (let i = 0; i < 13; i++) {
