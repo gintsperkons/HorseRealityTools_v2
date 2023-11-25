@@ -82,7 +82,8 @@ const callListeners = () => {
         }
         newDict[key] = horseData[key];
       }
-      chrome.storage.local.set({ horseData: horseData });
+
+      chrome.storage.local.set({ horseData: newDict });
     });
   });
   chrome.runtime.onMessage.addListener(handleDataRequests);

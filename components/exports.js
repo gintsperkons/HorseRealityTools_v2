@@ -40,7 +40,7 @@ function exportJSON(data, fileName) {
 
 function exportCSV(data, fileName) {
   var result =
-    "Name,Lifenumber,Gender,Breed,Birthday,Age,Horse height,owner,ownerUrl,ownerRanch,bornRanch,bornRanchUrl,Tagline,Url," +
+    "Name,Lifenumber,Gender,Breed,Birthday,Age,Horse height,lastUpdated,owner,ownerUrl,ownerRanch,bornRanch,bornRanchUrl,Tagline,Url," +
     "Pregnant," +
     "Current training,Current training level," +
     "Genetic potential,Acceleration,Agility,Balance,Bascule,Pulling power,Speed,Sprint,Stamina,Strength,Surefootedness,Advice,Best training," +
@@ -57,6 +57,7 @@ function exportCSV(data, fileName) {
       result += data[key]["birthDay"] + ",";
       result += data[key]["age"] + ",";
       result += data[key]["horseHeight"] + ",";
+      result += timeConverter(data[key]["lastUpdated"]) + ",";
       result += data[key]["owner"] + ",";
       result += data[key]["ownerUrl"] + ",";
       result += data[key]["ownerRanch"] + ",";
@@ -70,7 +71,8 @@ function exportCSV(data, fileName) {
       }
     }
     if (data[key]["summary"]) {
-      result += data[key]["summary"]["pregnant"] + ",";
+      result += (data[key]["summary"]["pregnant"] ? data[key]["summary"]["pregnant"].replaceAll(",", "") : "undefined");
+      result +=  ",";
     } else {
       for (let i = 0; i < 1; i++) {
         result += "undefined" + ",";
@@ -96,7 +98,7 @@ function exportCSV(data, fileName) {
       result += data[key]["genetics"]["stamina"] + ",";
       result += data[key]["genetics"]["strength"] + ",";
       result += data[key]["genetics"]["surefootedness"] + ",";
-      result += data[key]["genetics"]["advice"].replaceAll(",", "") + ",";
+      result += data[key]["genetics"]["advice"] ? data[key]["genetics"]["advice"].replaceAll(",", "") : "undefined";
       result += data[key]["genetics"]["bestTraining"] + ",";
     } else {
       for (let i = 0; i < 13; i++) {
@@ -144,6 +146,19 @@ function exportCSV(data, fileName) {
   }
   save(result, fileName);
 }
+
+  function timeConverter(UNIX_timestamp){
+    var a = new Date(UNIX_timestamp * 1000);
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var year = a.getFullYear();
+    var month = months[a.getMonth()];
+    var date = a.getDate();
+    var hour = a.getHours();
+    var min = a.getMinutes();
+    var sec = a.getSeconds();
+    var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+    return time;
+  }
 
 function save(data, filename) {
   (function (console) {
